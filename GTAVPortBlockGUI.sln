@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAVPortBlockGUI", "GTAVPortBlockGUI\GTAVPortBlockGUI.csproj", "{099F1994-1EAE-416F-AEF1-2A2B4D47D9FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{099F1994-1EAE-416F-AEF1-2A2B4D47D9FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{099F1994-1EAE-416F-AEF1-2A2B4D47D9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{099F1994-1EAE-416F-AEF1-2A2B4D47D9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{099F1994-1EAE-416F-AEF1-2A2B4D47D9FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7494FDA9-C0AB-454B-9954-948B494E5B64}
+	EndGlobalSection
+EndGlobal
