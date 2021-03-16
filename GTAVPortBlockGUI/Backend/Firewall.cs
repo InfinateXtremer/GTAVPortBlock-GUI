@@ -7,7 +7,8 @@ namespace PortBlock.FireWall
 {
     class Firewall
     {
-        static readonly string RULE_NAME = "[PORT-BLOCK-GTAV]";
+        static readonly string IN_RULE_NAME = "[IN-PORT-BLOCK-GTAV]";
+        static readonly string OUT_RULE_NAME = "[OUT-PORT-BLOCK-GTAV]";
         static readonly string RULE_PORTS = "6672";
 
         //Firewall Related Functions
@@ -23,9 +24,10 @@ namespace PortBlock.FireWall
         public static void CreateFirewallRule(string IPrange)
         {
             INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-            firewallPolicy.Rules.Remove(RULE_NAME);
+            firewallPolicy.Rules.Remove(IN_RULE_NAME);
+            firewallPolicy.Rules.Remove(OUT_RULE_NAME);
             INetFwRule2 inboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule")); // Let's create a new rule
-            inboundRule.Name = RULE_NAME; //Name of rule
+            inboundRule.Name = IN_RULE_NAME; //Name of rule
             inboundRule.Enabled = true;
             inboundRule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK; //Block through firewall
             inboundRule.Profiles = (int)NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_ALL;
@@ -34,13 +36,32 @@ namespace PortBlock.FireWall
             inboundRule.LocalPorts = RULE_PORTS; //Gta v default session port
             inboundRule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;                       
             inboundRule.ApplicationName = GTAVPortBlockGUI.Properties.Settings.Default.GTAVEXE;
-            firewallPolicy.Rules.Add(inboundRule);// Now add the rule              
+            firewallPolicy.Rules.Add(inboundRule);// Now add the rule         
+
+            
+            INetFwRule2 outboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule")); // Let's create a new rule
+            outboundRule.Name = OUT_RULE_NAME; //Name of rule
+            outboundRule.Enabled = true;
+            outboundRule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK; //Block through firewall
+            outboundRule.Profiles = (int)NET_FW_PROFILE_TYPE2_.NET_FW_PROFILE2_ALL;
+            outboundRule.Protocol = (int)NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_UDP; // UDP
+            outboundRule.RemoteAddresses = IPrange; //TODO Get ranged ip list
+            outboundRule.LocalPorts = RULE_PORTS; //Gta v default session port
+            outboundRule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT;
+            outboundRule.ApplicationName = GTAVPortBlockGUI.Properties.Settings.Default.GTAVEXE;
+            firewallPolicy.Rules.Add(outboundRule);// Now add the rule    
         }
 
         public static void RemoveRules()
         {
             INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
-            firewallPolicy.Rules.Remove(RULE_NAME);
+            firewallPolicy.Rules.Remove(IN_RULE_NAME);
+            firewallPolicy.Rules.Remove(OUT_RULE_NAME);
+        }
+
+        public static void DisableFirewall()
+        {
+
         }
     }
 }
