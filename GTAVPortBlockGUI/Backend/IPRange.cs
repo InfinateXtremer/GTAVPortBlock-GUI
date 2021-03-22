@@ -13,13 +13,11 @@ namespace PortBlock.IPRange
     class IPRange
     {
         //Ip address lenght function
-        public static string RangeIps(SortedDictionary<string, bool> blockList)
+        public static string RangeIps(SortedList<string, bool> blockList)
         {
             List<uint> byteIpList = new List<uint>(); //Parsed IP to Byte
             List<string> rangedblockList = new List<string>(); //Parsed IP Range
             rangedblockList.Add("0.0.0.0");
-            
-            SortedDictionary<uint, bool> rangedByteList = new SortedDictionary<uint, bool>(); //Byte IP Range
             if (blockList.Any())
             {
                 foreach (KeyValuePair<string, bool> ip in blockList)
@@ -29,23 +27,14 @@ namespace PortBlock.IPRange
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(bytes);
-                    }
-                    //MessageBox.Show(BitConverter.ToUInt32(bytes, 0).ToString()); ;
-                    byteIpList.Add(BitConverter.ToUInt32(bytes, 0));
+                    }                   
+                    byteIpList.Add(BitConverter.ToUInt32(bytes, 0) - 1); //Add ranged bytes instead of converted byte
+                    byteIpList.Add(BitConverter.ToUInt32(bytes, 0) + 1); //Add ranged bytes instead of converted byte
                 }
-                byteIpList.Sort();
+                byteIpList.Sort(); //Sort it just in case
                 foreach (uint byteAddress in byteIpList)
                 {
-                    rangedByteList.Add(byteAddress - 1, true);
-                    rangedByteList.Add(byteAddress + 1, true);
-                    //MessageBox.Show((byteAddress - 1).ToString());
-
-                }
-                byteIpList.Clear();
-                foreach (KeyValuePair<uint, bool> byteAddress in rangedByteList)
-                {
-
-                    byte[] bytes = BitConverter.GetBytes(byteAddress.Key);
+                    byte[] bytes = BitConverter.GetBytes(byteAddress);
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(bytes);

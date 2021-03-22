@@ -18,7 +18,7 @@ namespace GTAVPortBlockGUI
 {
     public partial class MainWindow : Window
     {
-        public SortedDictionary<string, bool> blockList = new SortedDictionary<string, bool>();
+        public SortedList<string, bool> blockList = new SortedList<string, bool>();
         
 
         public MainWindow()
@@ -56,20 +56,14 @@ namespace GTAVPortBlockGUI
             }
         }
         //REMOVE IP BUTTON FUNCTIONS
-        private void removeIP_Click(object sender, RoutedEventArgs e)
+        private void RemoveIP_Click(object sender, RoutedEventArgs e)
         {
             if (ipListbox.SelectedItems.Count >= 1)
             {
-                var list = new List<KeyValuePair<string, bool>>(); //Sürekli yeni liste yapmanın bir amacı yok, bunu 1 kere initiliaze edip sürekli temizlemek lazım
                 foreach (KeyValuePair<string, bool> ip in ipListbox.SelectedItems)
                 {
-                    //MessageBox.Show(ip.Key);
-                    list.Add(new KeyValuePair<string, bool>(ip.Key, ip.Value));
-                }
-                foreach (KeyValuePair<string, bool> tempips in list)
-                {
-                    blockList.Remove(tempips.Key);
-                    Properties.Settings.Default.blockList.Remove(tempips.Key);
+                    blockList.Remove(ip.Key);
+                    Properties.Settings.Default.blockList.Remove(ip.Key);
                 }
                 Properties.Settings.Default.Save();
                 ipListbox.Items.Refresh();
@@ -81,14 +75,14 @@ namespace GTAVPortBlockGUI
         }
         void GetIpListSetting()
         {
-            if(Properties.Settings.Default.blockList != null)
+            if(Properties.Settings.Default.blockList != null) // try getting blocklist string collection
             { 
                 foreach (string ip in Properties.Settings.Default.blockList)
                 {
                     blockList.Add(ip, true);
                 }
             }
-            else
+            else //init string collection if is not vallid
             {
                 StringCollection sc = new StringCollection();
                 Properties.Settings.Default.blockList = sc;
@@ -96,15 +90,12 @@ namespace GTAVPortBlockGUI
             }
 
         }
-
         private void ruleToggle_Click(object sender, RoutedEventArgs e)
-        {
+        {   
             string firewallRange = IPRange.RangeIps(blockList);
             //MessageBox.Show(firewallRange);
             Firewall.CreateFirewallRule(firewallRange);
         }
-
-
         void CheckFirewall()
         {
             if (Firewall.CheckFirewallEnabled())
@@ -190,8 +181,8 @@ namespace GTAVPortBlockGUI
                     }
                     else
                     {
-                        int index = o.ToString().LastIndexOf("GTAV");
-                        if (File.Exists(o.ToString().Substring(0, index) + "GTA5.exe"))
+                        int index = o.ToString().LastIndexOf("GTAV"); //remove GTAV from registry key
+                        if (File.Exists(o.ToString().Substring(0, index) + "GTA5.exe")) //combine registry with exe name
                         {
                             Properties.Settings.Default.GTAVEXE = (o.ToString().Substring(0, index) + "GTA5.exe");
                             //MessageBox.Show(GTAVEXE.ToString());
@@ -212,7 +203,7 @@ namespace GTAVPortBlockGUI
         void OpenGTAVFileBrowser()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "GTA5.EXE (*.exe)|*.exe|All files (*.*)|*.*";
+            openFileDialog.Filter = "GTA5.EXE |GTA5.exe|All files (*.*)|*.*";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (openFileDialog.ShowDialog() == true)
             {

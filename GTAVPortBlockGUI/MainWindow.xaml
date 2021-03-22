@@ -22,14 +22,15 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="removeIP" Content="Remove IP" HorizontalAlignment="Right" Margin="0,44,10,0" VerticalAlignment="Top" Width="75" Height="23" Click="removeIP_Click"/>
-        <Label x:Name="firewallLabel" Content="Firewall Not Enabled!" Margin="10,13,330,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
+        <Button x:Name="removeIP" Content="Remove IP" HorizontalAlignment="Right" Margin="0,44,10,0" VerticalAlignment="Top" Width="75" Height="23" Click="RemoveIP_Click"/>
+        <Label x:Name="firewallLabel" Content="Firewall Not Enabled!" Margin="10,13,562,0" VerticalAlignment="Top" Padding="0,5,5,5"/>
         <Button x:Name="ruleEnable" Content="Enable Block" HorizontalAlignment="Right" Margin="0,13,90,0" VerticalAlignment="Top" Width="75" Click="ruleToggle_Click" Height="26"/>
         <Button x:Name="firewallToggle" Content="Toggle Firewall" Margin="0,13,170,0" VerticalAlignment="Top" Click="firewallToggle_Click" Height="26" Width="155" HorizontalAlignment="Right"/>
         <Button x:Name="installLocation" Content="Change GTA5.exe Location" HorizontalAlignment="Right" Margin="0,72,10,0" VerticalAlignment="Top" Width="155" Height="23" Click="installLocation_Click"/>
         <TextBox x:Name="gtavInstallLocation" Height="23" Margin="10,72,330,0" Text="GTA5.EXE" VerticalAlignment="Top"/>
         <Button x:Name="ruleDisable" Content="Disable Block" HorizontalAlignment="Right" Margin="0,13,10,0" VerticalAlignment="Top" Width="75" Height="26" Click="ruleDisable_Click"/>
         <Button x:Name="autofindinstall" Content="Auto Find GTA5.exe Location" HorizontalAlignment="Right" Margin="0,72,170,0" VerticalAlignment="Top" Width="155" Height="23" Click="locationsearch_click"/>
+        <Label x:Name="ruleLabel" Content="Firewall Not Enabled!" Margin="165,13,330,0" VerticalAlignment="Top" Padding="0,5,5,5" HorizontalContentAlignment="Right" HorizontalAlignment="Left"/>
 
     </Grid>
 </Window>

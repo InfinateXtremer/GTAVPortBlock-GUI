@@ -16,9 +16,22 @@ namespace PortBlock.FireWall
         {
             Type NetFwMgrType = Type.GetTypeFromProgID("HNetCfg.FwMgr", false);
             INetFwMgr mgr = (INetFwMgr)Activator.CreateInstance(NetFwMgrType);
+            return mgr.LocalPolicy.CurrentProfile.FirewallEnabled;
+        }
 
-            bool firewallEnabled = mgr.LocalPolicy.CurrentProfile.FirewallEnabled;
-            return (firewallEnabled);
+        public static bool CheckRule(string rulename)
+        {
+        INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+        foreach (INetFwRule rule in firewallPolicy.Rules)
+            if (rule.Name.IndexOf(rulename) != -1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            return false;
         }
 
         public static void CreateFirewallRule(string IPrange)
@@ -26,7 +39,7 @@ namespace PortBlock.FireWall
             INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
             firewallPolicy.Rules.Remove(IN_RULE_NAME);
             firewallPolicy.Rules.Remove(OUT_RULE_NAME);
-            INetFwRule2 inboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule")); // Let's create a new rule
+            INetFwRule2 inboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
             inboundRule.Name = IN_RULE_NAME; //Name of rule
             inboundRule.Enabled = true;
             inboundRule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK; //Block through firewall
@@ -39,7 +52,7 @@ namespace PortBlock.FireWall
             firewallPolicy.Rules.Add(inboundRule);// Now add the rule         
 
             
-            INetFwRule2 outboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule")); // Let's create a new rule
+            INetFwRule2 outboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
             outboundRule.Name = OUT_RULE_NAME; //Name of rule
             outboundRule.Enabled = true;
             outboundRule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK; //Block through firewall
