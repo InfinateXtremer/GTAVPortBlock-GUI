@@ -82,7 +82,7 @@ namespace GTAVPortBlockGUI
                     blockList.Add(ip, true);
                 }
             }
-            else //init string collection if is not vallid
+            else //if it is valid create new one
             {
                 StringCollection sc = new StringCollection();
                 Properties.Settings.Default.blockList = sc;
